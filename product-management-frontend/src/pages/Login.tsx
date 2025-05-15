@@ -1,8 +1,14 @@
 import { useState } from 'react';
-import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
+import {
+  Container,
+  TextField,
+  Button,
+  Typography,
+  Box,
+  Alert
+} from '@mui/material';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
-console.log('Sending login to:', `${API_BASE_URL}/auth/login`);
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,19 +18,28 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+    console.log('Sending login to:', `${API_BASE_URL}/auth/login`);
+
     try {
       const res = await axios.post('/auth/login', { email, password });
       localStorage.setItem('token', res.data.access_token);
       navigate('/products');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      console.error('Login error:', err);
+      setError(
+        err.response?.data?.message || 'Login failed. Please try again.'
+      );
     }
   };
 
   return (
     <Container maxWidth="sm">
       <Box mt={5}>
-        <Typography variant="h4" gutterBottom>Login</Typography>
+        <Typography variant="h4" gutterBottom>
+          Login
+        </Typography>
         {error && <Alert severity="error">{error}</Alert>}
         <form onSubmit={handleLogin}>
           <TextField
@@ -32,7 +47,7 @@ export default function Login() {
             fullWidth
             margin="normal"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
           <TextField
@@ -41,7 +56,7 @@ export default function Login() {
             fullWidth
             margin="normal"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <Button type="submit" variant="contained" color="primary" fullWidth>

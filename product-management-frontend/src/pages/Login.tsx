@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Container, TextField, Button, Typography, Box, Alert } from '@mui/material';
 import axios from '../api/axios';
 import { useNavigate } from 'react-router-dom';
+console.log('Sending login to:', `${API_BASE_URL}/auth/login`);
 
 export default function Login() {
   const [email, setEmail] = useState('');
